@@ -9,10 +9,13 @@ on:
 # This doesn't work in Actions, however, so we set this env var to force the Headless runner
 env:
   TEST_BROWSERS: ChromeHeadless
-  
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Initialize CodeQL
@@ -26,4 +29,3 @@ jobs:
       - run: npm run build-test
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
-
